@@ -1,0 +1,363 @@
+/* Hangman.java
+ * Plays a game of hangman in the theme of computing careers
+ * February 21, 2018
+ * @author Raymond Wang
+ */
+
+import java.util.Scanner;
+import java.util.Random;
+
+class Hangman {
+  public static void main (String[] args) {
+    Scanner input = new Scanner(System.in);
+    Random myRandom= new Random();
+    
+    String[] careers;
+    careers = new String[15];
+    careers[0]="web developer";
+    careers[1]="video game developer";
+    careers[2]="database developer";
+    careers[3]="computer support specialist";
+    careers[4]="computer animator";
+    careers[5]="bioinformatics specialist";
+    careers[6]="it project manager";
+    careers[7]="multimedia developer";
+    careers[8]="network administrator";
+    careers[9]="it security specialist";
+    careers[10]="computer systems analyst";
+    careers[11]="health information specialist";
+    careers[12]="computer hardware engineer";
+    careers[13]="seo specialist";
+    careers[14]="ux designer";
+    
+    int[] completedCareers;
+    completedCareers = new int[15];
+    
+    String[] hint;
+    hint = new String[90];
+    //Career 0 Hints
+    hint[0]="";
+    hint[1]="";
+    hint[2]="";
+    hint[3]="";
+    hint[4]="";
+    hint[5]="";
+    
+    //Career 1 Hints
+    hint[6]="";
+    hint[7]="";
+    hint[8]="";
+    hint[9]="";
+    hint[10]="";
+    hint[11]="";
+    
+    //Career 2 Hints
+    hint[12]="";
+    hint[13]="";
+    hint[14]="";
+    hint[15]="";
+    hint[16]="";
+    hint[17]="";
+    
+    //Career 3 Hints
+    hint[18]="";
+    hint[19]="";
+    hint[20]="";
+    hint[21]="";
+    hint[22]="";
+    hint[23]="";
+    
+    //Career 4 Hints
+    hint[24]="";
+    hint[25]="";
+    hint[26]="";
+    hint[27]="";
+    hint[28]="";
+    hint[29]="";
+    
+    //Career 5 Hints
+    hint[30]="";
+    hint[31]="";
+    hint[32]="";
+    hint[33]="";
+    hint[34]="";
+    hint[35]="";
+    
+    //Career 6 Hints
+    hint[36]="";
+    hint[37]="";
+    hint[38]="";
+    hint[39]="";
+    hint[40]="";
+    hint[41]="";
+    
+    //Career 7 Hints
+    hint[42]="";
+    hint[43]="";
+    hint[44]="";
+    hint[45]="";
+    hint[46]="";
+    hint[47]="";
+    
+    //Career 8 Hints
+    hint[48]="";
+    hint[49]="";
+    hint[50]="";
+    hint[51]="";
+    hint[52]="";
+    hint[53]="";
+    
+    //Career 9 Hints
+    hint[54]="";
+    hint[55]="";
+    hint[56]="";
+    hint[57]="";
+    hint[58]="";
+    hint[59]="";
+    
+    //Career 10 Hints
+    hint[60]="";
+    hint[61]="";
+    hint[62]="";
+    hint[63]="";
+    hint[64]="";
+    hint[65]="";
+    
+    //Career 11 Hints
+    hint[66]="";
+    hint[67]="";
+    hint[68]="";
+    hint[69]="";
+    hint[70]="";
+    hint[71]="";
+    
+    //Career 12 Hints
+    hint[72]="";
+    hint[73]="";
+    hint[74]="";
+    hint[75]="";
+    hint[76]="";
+    hint[77]="";
+    
+    //Career 13 Hints
+    hint[78]="";
+    hint[79]="";
+    hint[80]="";
+    hint[81]="";
+    hint[82]="";
+    hint[83]="";
+    
+    //Career 14 Hints
+    hint[84]="";
+    hint[85]="";
+    hint[86]="";
+    hint[87]="";
+    hint[88]="";
+    hint[89]="";
+    
+    //Variables
+    String anotherTry;
+    int listIndex=0;
+    int change;
+    int lives;
+    String guess;
+    char guessChar=' ', guessCharUpperCase=' ';
+    String guessString;
+    Boolean win;
+    int countPlays=0;
+    
+    do{
+      win=false;
+      
+      //Lives start at six for each body part
+      lives = 6; 
+      
+      //Chooses a random career and repeats if chosen already
+        do{ listIndex=myRandom.nextInt(15);
+
+        }while (completedCareers[listIndex]==listIndex);
+     countPlays+=1;
+       
+      completedCareers[listIndex]=listIndex;
+      System.out.println(completedCareers[listIndex]);
+      
+      String secretWord=careers[listIndex]; 
+      System.out.println(secretWord);
+      
+      String blanks="";
+      change=0;
+      
+      //Input for guess
+      
+      for (int j=0; j<secretWord.length(); j++){
+        if (secretWord.charAt(j)==' ') {
+          blanks=blanks+" ";
+        } else {
+          blanks=blanks+"-";}
+      }
+      
+      System.out.println(blanks);
+      System.out.println(hint[listIndex*6]);
+      
+      while (lives>0 && win==false && countPlays<=15) {
+        guess=input.nextLine();
+        guess=guess.toLowerCase();
+        change=0;
+        
+        if (guess.length()!=1) { //Treats guess as a string and compares it directly with the secret word
+          if (guess.equals(secretWord)){ //Wins if string matches the secret word
+            System.out.println("Winner!!!");
+            win=true;
+            
+          } else {
+            lives-=1;
+            System.out.println(blanks);
+            System.out.println("INCORRECT");
+            //For every incorrect answer (except the last), the player gets a hint
+            if (lives!=0){
+              System.out.println(hint[listIndex*6+(6-lives)]);
+            }
+            System.out.println("Lives: "+lives);
+          }
+        }
+        
+        
+        
+        if (guess.length()==1) { ////Treats guess as a character and finds and replaces it in the blanks
+          guessChar=guess.charAt(0);
+          
+          guessString=Character.toString(guessChar);
+          guessCharUpperCase=guessString.toUpperCase().charAt(0);
+          
+          //Checks for each guess
+          for (int i=0; i<secretWord.length(); i++){
+            if (guessChar == secretWord.charAt(i)) {
+              secretWord=secretWord.replace(guessChar, guessCharUpperCase);
+              
+              change=0;
+              blanks="";
+              
+              //Displays one blank for each letter
+              for (int j=0; j<secretWord.length(); j++){
+                if  (Character.toString(secretWord.charAt(j)).compareTo("a")<0) {
+                  blanks=blanks+secretWord.charAt(j);
+                  change+=1;
+                } else {
+                  blanks=blanks+"-";
+                }
+              }
+              
+              //Hangman Art
+              System.out.println("+---+");
+              
+              for (int p=2; p<7; p++) {
+                System.out.print("|");
+                System.out.print("  ");
+                if (p==2) {
+                  System.out.println(" |");
+                  //
+                } else if (p==3 && lives<=5) {
+                  System.out.println(" 0");
+                  //
+                }else if (p==4 && lives==4) {
+                  System.out.println(" |");
+                }else if (p==4 && lives==3) {
+                  System.out.println("/|");
+                }else if (p==4 && lives<=2) {
+                  System.out.println("/|\\");
+                  
+                  
+                }else if (p==5 && lives==1) {
+                  System.out.println("/");
+                  
+                }else if (p==5 && lives==0) {
+                  System.out.println("/ \\");
+                  
+                } else {
+                  System.out.println("");}
+              }
+              System.out.printf("%s %n", "#=======#");
+              
+              System.out.println(blanks);
+              
+              
+              if (blanks.indexOf("-")==-1) { //If all blanks are filled, the player wins
+                System.out.println("Winner!!!");
+                win=true;
+              }
+              
+            }
+          }
+          if (change==0){
+            lives-=1;
+            //Hangman Art
+            System.out.println("+---+");
+            for (int p=2; p<7; p++) {
+              System.out.print("|");
+              System.out.print("  ");
+              
+              if (p==2) {
+                System.out.println(" |");
+                //
+              } else if (p==3 && lives<=5) {
+                System.out.println(" 0");
+                //
+              }else if (p==4 && lives==4) {
+                System.out.println(" |");
+              }else if (p==4 && lives==3) {
+                System.out.println("/|");
+              }else if (p==4 && lives<=2) {
+                System.out.println("/|\\");
+              }else if (p==5 && lives==1) {
+                System.out.println("/");
+                
+              }else if (p==5 && lives==0) {
+                System.out.println("/ \\");
+                
+              } else {
+                System.out.println("");
+              }
+            }
+            System.out.println(blanks);
+            System.out.println("INCORRECT");
+            
+            if (lives!=0){
+              System.out.println(hint[listIndex*6+(6-lives)]);
+            }
+            
+            System.out.println("Lives: "+lives);
+          }
+        }
+      } 
+      
+      
+      if (lives==0){ //Ends the game and reveals the word
+        System.out.println("");
+        System.out.println("*===GAME OVER===*");
+        System.out.println("The word is: "+secretWord.toUpperCase());
+      }
+      
+      if (countPlays==15) {
+        System.out.println("You played all the words! Congratulations!");
+      }
+      
+      //Prompts the player to try again
+      System.out.println("TRY AGAIN? Y/N");
+      anotherTry=input.nextLine().toUpperCase();
+      while (!anotherTry.equals("Y") && !anotherTry.equals("N")){
+        System.out.println("Invalid Response. Please enter Y/N");
+        anotherTry=input.nextLine().toUpperCase();
+      }
+      
+      //if (countPlays==15 && notherTry.equals("Y")) {
+        
+      
+      
+    } while (anotherTry.equals("Y"));
+    
+    System.out.println("You choose not to play again.");
+  }
+}
+
+
+
